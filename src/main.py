@@ -12,7 +12,7 @@ api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
 
 # タイトル
-st.markdown("##🔮 AIタロット占い")
+st.markdown("## 🔮 AIタロット占い")
 st.write("テーマを選んで、1枚引きで占います")
 
 # テーマ選択
