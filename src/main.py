@@ -199,8 +199,9 @@ if button_clicked:
             # 成功時のみ回数消費
             st.session_state.count += 1
 
+             # ⭐ここで再描画
             remaining = max(0, DAILY_LIMIT - st.session_state.count)
-            st.caption(f"残り回数: {remaining}")
+            remaining_placeholder.caption(f"本日あと {remaining} 回")
 
         except Exception:
             # 公開時は詳細な例外をそのまま出しすぎない
