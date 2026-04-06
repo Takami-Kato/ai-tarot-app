@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import os
 import json
 import random
@@ -26,6 +27,8 @@ IMAGES_DIR = Path("images")
 # 簡易入場コード（未設定なら無効）
 APP_PASSWORD = st.secrets.get("APP_PASSWORD", "")
 
+# Google Analytics 4
+GA_MEASUREMENT_ID = st.secrets.get("GA_MEASUREMENT_ID", "")
 # =========================
 # セッション状態初期化
 # =========================
@@ -81,7 +84,28 @@ if APP_PASSWORD:
 # キャッシュ対象
 # cards.json は毎回読まずキャッシュ
 # =========================
-@st.cache_data
+
+def init_ga():
+    """GA4を初期化し、通常の page_view を有効化"""
+    if not GA_MEASUREMENT_ID:
+        return
+
+    components.html(
+        f"""
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){{dataLayer.push(arguments);}}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', '{GA_MEASUREMENT_ID}');
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
 def load_cards():
     with open(CARDS_JSON_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -121,9 +145,42 @@ def get_tarot_reading(theme: str, card_name: str, orientation: str, meaning: str
         raise RuntimeError("占い結果を取得できませんでした。")
     return text.strip()
 
+def track_fortune_draw(theme: str, card_name: str, orientation: str):
+    """占い成功時に GA4 の custom event を送る"""
+    if not GA_MEASUREMENT_ID:
+        return
+
+    safe_theme = theme.replace("'", "\\'")
+    safe_card_name = card_name.replace("'", "\\'")
+    safe_orientation = orientation.replace("'", "\\'")
+
+    components.html(
+        f"""
+        <script>
+          if (window.parent && window.parent.gtag) {{
+            window.parent.gtag('event', 'fortune_draw', {{
+              theme: '{safe_theme}',
+              card_name: '{safe_card_name}',
+              orientation: '{safe_orientation}'
+            }});
+          }} else if (window.gtag) {{
+            window.gtag('event', 'fortune_draw', {{
+              theme: '{safe_theme}',
+              card_name: '{safe_card_name}',
+              orientation: '{safe_orientation}'
+            }});
+          }}
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
 # =========================
 # UI
 # =========================
+init_ga()
+
 st.markdown("## 🔮 AIタロット占い")
 st.write("テーマを選んで、1枚引きで占います")
 
@@ -195,6 +252,12 @@ if button_clicked:
 
             st.subheader("🔮 解釈")
             st.write(result)
+
+            track_fortune_draw(
+                theme=theme,
+                card_name=card["name"],
+                orientation=orientation,
+            )
 
             # 成功時のみ回数消費
             st.session_state.count += 1
