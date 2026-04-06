@@ -128,7 +128,7 @@ st.markdown("## 🔮 AIタロット占い")
 st.write("テーマを選んで、1枚引きで占います")
 
 remaining = max(0, DAILY_LIMIT - st.session_state.count)
-st.caption(f"このセッションで本日あと {remaining} 回")
+st.caption(f"本日あと {remaining} 回")
 
 if st.session_state.count >= DAILY_LIMIT:
     st.warning("本日の占い回数は終了しました。")
