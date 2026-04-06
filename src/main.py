@@ -12,7 +12,7 @@ api_key = st.secrets["OPENAI_API_KEY"]
 client = OpenAI(api_key=api_key)
 
 # タイトル
-st.title("🔮 AIタロット占い")
+st.markdown("##🔮 AIタロット占い")
 st.write("テーマを選んで、1枚引きで占います")
 
 # テーマ選択
@@ -22,7 +22,12 @@ theme = st.selectbox("占うテーマを選択", ["金運", "仕事運", "恋愛
 with open("data/cards.json", "r", encoding="utf-8") as f:
     cards = json.load(f)
 
-# ボタン
+# ボタン右寄せ
+col1, col2 = st.columns([3, 1])
+
+with col2:
+    button_clicked = st.button("占う")
+
 if st.button("占う"):
     with st.spinner("🔮 占い中... 少し待ってください"):
         card = random.choice(cards)
