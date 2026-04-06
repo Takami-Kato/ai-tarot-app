@@ -18,7 +18,7 @@ st.set_page_config(page_title="AIタロット占い", page_icon="🔮")
 # 設定値
 # =========================
 DAILY_LIMIT = 3                # 1セッション内の1日あたり回数
-COOLDOWN_SECONDS = 5          # 連打対策
+COOLDOWN_SECONDS = 10          # 連打対策
 MODEL_NAME = "gpt-4.1-mini"
 MAX_OUTPUT_TOKENS = 220        # 出力コスト抑制
 CARDS_JSON_PATH = Path("data/cards.json")
