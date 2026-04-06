@@ -205,7 +205,10 @@ except Exception:
 
 col1, col2 = st.columns([3, 1])
 with col2:
-    button_clicked = st.button("占う", key="fortune_button", use_container_width=True)
+    if st.session_state.count < DAILY_LIMIT:
+        button_clicked = st.button("占う", key="fortune_button", use_container_width=True)
+    else:
+        button_clicked = False
 
 # =========================
 # 実行
