@@ -104,7 +104,7 @@ def get_tarot_reading(theme: str, card_name: str, orientation: str, meaning: str
 {meaning}
 
 条件:
-・200〜300文字
+・必ず200以内にまとめること
 ・具体的な日常に落とし込む
 ・最後に一言アドバイス
 ・曖昧なスピリチュアル表現だけで済ませず、行動に落とし込む
