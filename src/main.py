@@ -26,9 +26,9 @@ with open("data/cards.json", "r", encoding="utf-8") as f:
 col1, col2 = st.columns([3, 1])
 
 with col2:
-    button_clicked = st.button("占う")
+    button_clicked = st.button("占う", key="fortune_button", use_container_width=True)
 
-if st.button("占う"):
+if button_clicked:
     with st.spinner("🔮 占い中... 少し待ってください"):
         card = random.choice(cards)
         orientation = random.choice(["正位置", "逆位置"])
