@@ -5,11 +5,6 @@ import random
 from PIL import Image
 from openai import OpenAI
 
-st.set_page_config(
-    page_title="AIタロット占い",
-    page_icon="🔮"
-)
-
 # 環境変数読み込み
 st.set_page_config(page_title="AIタロット占い", page_icon="🔮")
 
