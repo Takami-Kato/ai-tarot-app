@@ -193,8 +193,8 @@ remaining_placeholder.caption(f"本日あと {remaining} 回")
 if st.session_state.count >= DAILY_LIMIT:
     st.warning("本日の占い回数は終了しました。")
     st.stop()
-
-theme = st.selectbox("占うテーマを選択", ["金運", "仕事運", "恋愛運", "総合運"])
+else:
+    theme = st.selectbox("占うテーマを選択", ["金運", "仕事運", "恋愛運", "総合運"])
 
 # cards.json 読み込み
 try:
@@ -207,8 +207,6 @@ col1, col2 = st.columns([3, 1])
 with col2:
     if st.session_state.count < DAILY_LIMIT:
         button_clicked = st.button("占う", key="fortune_button", use_container_width=True)
-    else:
-        button_clicked = False
 
 # =========================
 # 実行
