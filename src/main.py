@@ -137,7 +137,7 @@ if st.session_state.count >= DAILY_LIMIT:
     st.warning("本日の占い回数は終了しました。")
     st.stop()
 
-theme = st.selectbox("占うテーマを選択", ["金運", "仕事運", "恋愛運", "総合運"])
+theme = st.radio("占うテーマを選択", ["金運", "仕事運", "恋愛運", "総合運"])
 
 # cards.json 読み込み
 try:
